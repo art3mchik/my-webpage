@@ -3,33 +3,41 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Student Performance by Grade Level</title>
-		<script type="text/javascript" src="/d3.v7.js"></script>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
 		<style type="text/css">
 			.legend {
+				font-family: sans-serif;
+				font-size: 12px;
+			}
+			text {
 				font-family: sans-serif;
 				font-size: 12px;
 			}
 		</style>
 	</head>
 	<body>
+		<h2>Student Performance Distribution</h2>
 		<script type="text/javascript">
+			// Width and height
 			var w = 500;
 			var h = 300;
 			
-			// Dataset showing student counts by grade and performance level
+			// Dataset: Student counts for each grade and performance level
 			var dataset = [
-				{ excellent: 45, proficient: 30, needsImprovement: 15 },  // 9th grade
-				{ excellent: 38, proficient: 35, needsImprovement: 18 },  // 10th grade
-				{ excellent: 42, proficient: 28, needsImprovement: 20 },  // 11th grade
-				{ excellent: 50, proficient: 25, needsImprovement: 12 }   // 12th grade
+				{ excellent: 45, proficient: 30, needsImprovement: 15 },
+				{ excellent: 38, proficient: 35, needsImprovement: 18 },
+				{ excellent: 42, proficient: 28, needsImprovement: 20 },
+				{ excellent: 50, proficient: 25, needsImprovement: 12 }
 			];
 			
+			// Stack layout setup
 			var stack = d3.stack()
-						  .keys(["needsImprovement", "proficient", "excellent"])
-						  .order(d3.stackOrderNone);
+						  .keys(["needsImprovement", "proficient", "excellent"]);
 			
+			// Generate stacked data
 			var series = stack(dataset);
 			
+			// Scales
 			var xScale = d3.scaleBand()
 				.domain(d3.range(dataset.length))
 				.range([50, w-50])
@@ -41,10 +49,12 @@
 				})])
 				.range([h-30, 30]);
 				
+			// Color scale
 			var colors = d3.scaleOrdinal()
 				.domain(["needsImprovement", "proficient", "excellent"])
 				.range(["#e74c3c", "#f39c12", "#2ecc71"]);
 			
+			// Create SVG
 			var svg = d3.select("body")
 						.append("svg")
 						.attr("width", w)
@@ -67,6 +77,7 @@
 				.attr("text-anchor", "middle")
 				.text(function(d) { return d; });
 			
+			// Create groups for bars
 			var groups = svg.selectAll("g.bars")
 				.data(series)
 				.enter()
@@ -76,6 +87,7 @@
 					return colors(d.key);
 				});
 	
+			// Add rectangles for each data point
 			groups.selectAll("rect")
 				.data(function(d) { return d; })
 				.enter()
