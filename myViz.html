@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Data Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .bar {
+            height: 30px;
+            background-color: #4CAF50;
+            margin: 5px 0;
+            transition: width 0.5s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        .bar:hover {
+            opacity: 0.8;
+        }
+        .bar-label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Programming Languages Popularity</h1>
+        <p>Click the bars to see details. Use the buttons to sort the data.</p>
+        
+        <div>
+            <button onclick="sortData('asc')">Sort Ascending</button>
+            <button onclick="sortData('desc')">Sort Descending</button>
+        </div>
+        
+        <div id="chart" class="chart"></div>
+    </div>
+
+    <script>
+        let data = [
+            { language: "Python", popularity: 85 },
+            { language: "JavaScript", popularity: 75 },
+            { language: "Java", popularity: 70 },
+            { language: "C++", popularity: 65 },
+            { language: "Ruby", popularity: 45 }
+        ];
+
+        function renderChart() {
+            const chart = document.getElementById('chart');
+            chart.innerHTML = '';
+            
+            data.forEach(item => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.width = item.popularity + '%';
+                bar.innerHTML = `<span class="bar-label">${item.language}: ${item.popularity}%</span>`;
+                
+                bar.onclick = () => alert(`${item.language}\nPopularity: ${item.popularity}%`);
+                
+                chart.appendChild(bar);
+            });
+        }
+
+        function sortData(direction) {
+            data.sort((a, b) => {
+                return direction === 'asc' 
+                    ? a.popularity - b.popularity 
+                    : b.popularity - a.popularity;
+            });
+            renderChart();
+        }
+
+        renderChart();
+    </script>
+</body>
+</html>
