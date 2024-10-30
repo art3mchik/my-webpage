@@ -25,8 +25,8 @@
 		<script type="text/javascript">
 			// Width and height
 			var w = 600;
-			var h = 400; // Increased height to accommodate axis labels
-			var margin = {top: 20, right: 150, bottom: 60, left: 80}; // Increased margins for labels
+			var h = 400;
+			var margin = {top: 20, right: 150, bottom: 60, left: 100}; // Increased left margin
 			
 			// Dataset: Student counts for each grade and performance level
 			var dataset = [
@@ -66,14 +66,20 @@
 						.attr("width", w)
 						.attr("height", h);
 			
-			// Add y-axis with more ticks and labels
+			// Add y-axis with formatted labels
 			var yAxis = d3.axisLeft(yScale)
 				.ticks(10)
-				.tickFormat(d => d + " Students");
+				.tickFormat(d => d);
 			
 			svg.append("g")
 				.attr("transform", "translate(" + margin.left + ",0)")
 				.call(yAxis);
+			
+			// Add "Students" label to each y-axis tick
+			svg.selectAll(".tick text")
+				.text(function(d) {
+					return d;
+				});
 			
 			// Add y-axis label
 			svg.append("text")
@@ -128,12 +134,12 @@
 					return yScale(d[0]) - yScale(d[1]);
 				})
 				.attr("width", xScale.bandwidth())
-				.append("title")  // Add tooltip
+				.append("title")
 				.text(function(d) {
 					return `Count: ${d[1] - d[0]} Students`;
 				});
 			
-			// Add legend with adjusted position
+			// Add legend
 			var legend = svg.selectAll(".legend")
 				.data(["Excellent", "Proficient", "Needs Improvement"])
 				.enter()
