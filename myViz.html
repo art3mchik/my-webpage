@@ -2,153 +2,118 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Student Performance Visualization</title>
+		<title>Student Performance by Grade Level</title>
 		<script type="text/javascript" src="/d3.v7.js"></script>
 		<style type="text/css">
-			.container {
-				display: flex;
-				align-items: center;
-			}
-			p {
-				display: inline-block;
-				margin-right: 20px;
-			}
-			input {
-				height: 250px;
-				width: 30px;
-				-webkit-appearance: slider-vertical;
-				writing-mode: bt-lr;
-			}
-			.slider-label {
-				writing-mode: vertical-rl;
-				text-orientation: mixed;
-				margin-bottom: 10px;
+			.legend {
+				font-family: sans-serif;
+				font-size: 12px;
 			}
 		</style>
 	</head>
 	<body>
-		<h2>Student Performance Scores</h2>
-		<div class="container">
-			<div>
-				<p class="slider-label">Score Threshold</p>
-				<p><input id="slider" type="range" min="0" max="100" step="5" value="0" orient="vertical"></p>
-			</div>
-		</div>
-			
 		<script type="text/javascript">
-			// Set dimensions
-			const w = 800;
-			const h = 400;
-			const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+			var w = 500;
+			var h = 300;
 			
-			// Generate random student performance data
-			const dataset = Array.from({ length: 30 }, (_, i) => ({
-				key: i,
-				value: Math.floor(Math.random() * 100),
-				subject: ['Math', 'Science', 'English'][Math.floor(Math.random() * 3)]
-			}));
+			// Dataset showing student counts by grade and performance level
+			var dataset = [
+				{ excellent: 45, proficient: 30, needsImprovement: 15 },  // 9th grade
+				{ excellent: 38, proficient: 35, needsImprovement: 18 },  // 10th grade
+				{ excellent: 42, proficient: 28, needsImprovement: 20 },  // 11th grade
+				{ excellent: 50, proficient: 25, needsImprovement: 12 }   // 12th grade
+			];
 			
-			// Create scales
-			const xScale = d3.scaleBand()
-							.domain(d3.range(dataset.length))
-							.rangeRound([margin.left, w - margin.right])
-							.paddingInner(0.1);
+			var stack = d3.stack()
+						  .keys(["needsImprovement", "proficient", "excellent"])
+						  .order(d3.stackOrderNone);
 			
-			const yScale = d3.scaleLinear()
-							.domain([0, 100])
-							.range([h - margin.bottom, margin.top]);
+			var series = stack(dataset);
 			
-			// Create color scale for subjects
-			const colorScale = d3.scaleOrdinal()
-							.domain(['Math', 'Science', 'English'])
-							.range(['#4e79a7', '#f28e2c', '#e15759']);
+			var xScale = d3.scaleBand()
+				.domain(d3.range(dataset.length))
+				.range([50, w-50])
+				.paddingInner(0.05);
+		
+			var yScale = d3.scaleLinear()
+				.domain([0, d3.max(dataset, function(d) {
+					return d.excellent + d.proficient + d.needsImprovement;
+				})])
+				.range([h-30, 30]);
+				
+			var colors = d3.scaleOrdinal()
+				.domain(["needsImprovement", "proficient", "excellent"])
+				.range(["#e74c3c", "#f39c12", "#2ecc71"]);
 			
-			// Key function for data binding
-			const key = d => d.key;
-			
-			// Create SVG element
-			const svg = d3.select("body")
+			var svg = d3.select("body")
 						.append("svg")
 						.attr("width", w)
 						.attr("height", h);
 			
-			// Create axes
-			const xAxis = d3.axisBottom(xScale);
-			const yAxis = d3.axisLeft(yScale);
-			
+			// Add y-axis
+			var yAxis = d3.axisLeft(yScale);
 			svg.append("g")
-				.attr("transform", `translate(0,${h - margin.bottom})`)
-				.call(xAxis);
-			
-			svg.append("g")
-				.attr("transform", `translate(${margin.left},0)`)
+				.attr("transform", "translate(50,0)")
 				.call(yAxis);
 			
-			// Create bars
-			svg.selectAll("rect")
-			   .data(dataset, key)
-			   .enter()
-			   .append("rect")
-			   .attr("x", (d, i) => xScale(i))
-			   .attr("y", d => yScale(d.value))
-			   .attr("width", xScale.bandwidth())
-			   .attr("height", d => h - margin.bottom - yScale(d.value))
-			   .attr("fill", d => colorScale(d.subject))
-			   .on("mouseover", function(event, d) {
-					d3.select(this)
-						.transition()
-						.duration(200)
-						.attr("opacity", 0.7);
-					
-					// Add tooltip
-					svg.append("text")
-						.attr("class", "tooltip")
-						.attr("x", xScale(d.key) + xScale.bandwidth()/2)
-						.attr("y", yScale(d.value) - 5)
-						.attr("text-anchor", "middle")
-						.text(`${d.subject}: ${d.value}`);
-			   })
-			   .on("mouseout", function() {
-					d3.select(this)
-						.transition()
-						.duration(200)
-						.attr("opacity", 1);
-					
-					svg.selectAll(".tooltip").remove();
-			   });
+			// Add x-axis labels
+			svg.selectAll("text.grade")
+				.data(["9th", "10th", "11th", "12th"])
+				.enter()
+				.append("text")
+				.attr("class", "grade")
+				.attr("x", function(d, i) { return xScale(i) + xScale.bandwidth()/2; })
+				.attr("y", h-10)
+				.attr("text-anchor", "middle")
+				.text(function(d) { return d; });
 			
-			// Create legend
-			const legend = svg.append("g")
-				.attr("font-family", "sans-serif")
-				.attr("font-size", 10)
-				.attr("text-anchor", "start")
-				.selectAll("g")
-				.data(['Math', 'Science', 'English'])
-				.enter().append("g")
-				.attr("transform", (d, i) => `translate(${w - 100},${i * 20 + 20})`);
+			var groups = svg.selectAll("g.bars")
+				.data(series)
+				.enter()
+				.append("g")
+				.attr("class", "bars")
+				.style("fill", function(d) {
+					return colors(d.key);
+				});
+	
+			groups.selectAll("rect")
+				.data(function(d) { return d; })
+				.enter()
+				.append("rect")
+				.attr("x", function(d, i) {
+					return xScale(i);
+				})
+				.attr("y", function(d) {
+					return yScale(d[1]);
+				})
+				.attr("height", function(d) {
+					return yScale(d[0]) - yScale(d[1]);
+				})
+				.attr("width", xScale.bandwidth());
+			
+			// Add legend
+			var legend = svg.selectAll(".legend")
+				.data(["Excellent", "Proficient", "Needs Improvement"])
+				.enter()
+				.append("g")
+				.attr("class", "legend")
+				.attr("transform", function(d, i) {
+					return "translate(0," + (i * 20 + 40) + ")";
+				});
 			
 			legend.append("rect")
-				.attr("x", 0)
-				.attr("width", 15)
-				.attr("height", 15)
-				.attr("fill", colorScale);
+				.attr("x", w - 140)
+				.attr("width", 18)
+				.attr("height", 18)
+				.style("fill", function(d, i) {
+					return colors(["excellent", "proficient", "needsImprovement"][i]);
+				});
 			
 			legend.append("text")
-				.attr("x", 20)
-				.attr("y", 12)
-				.text(d => d);
-			
-			// Slider interaction
-			d3.select("input")
-				.on("input", function() {
-					const threshold = +this.value;
-					
-					svg.selectAll("rect")
-						.transition()
-						.duration(200)
-						.attr("fill", d => d.value <= threshold ? "#ff0000" : colorScale(d.subject))
-						.attr("opacity", d => d.value <= threshold ? 1 : 0.5);
-				});
+				.attr("x", w - 120)
+				.attr("y", 9)
+				.attr("dy", ".35em")
+				.text(function(d) { return d; });
 		</script>
 	</body>
 </html>
