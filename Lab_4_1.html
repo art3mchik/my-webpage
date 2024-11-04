@@ -3,107 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau Analysis</title>
+    <title>Lab 4.1 Tableau Analysis</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
-        }
-        .visualization-section {
-            margin-bottom: 40px;
-        }
-        .analysis-section {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
         }
         img {
             max-width: 100%;
-            height: auto;
             margin: 20px 0;
         }
-        h2 {
-            color: #333;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
+        .question {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
         }
     </style>
 </head>
 <body>
-    <h1>Tableau Data Analysis</h1>
+    <h1>Tableau Data Analysis - Lab 4.1</h1>
 
-    <div class="visualization-section">
-        <h2>Sales Distribution Across States</h2>
-        <img src="images/state-sales-map.png" alt="Sales Distribution Map">
-        <div class="analysis-section">
-            <h3>Key Findings:</h3>
-            <ul>
-                <li>Top 3 states by sales: [List states]</li>
-                <li>Bottom 3 states by sales: [List states]</li>
-                <li>Regional patterns: [Describe patterns]</li>
-            </ul>
-            <p><strong>Insights:</strong> [Your analysis of sales concentration]</p>
-        </div>
+    <img src="images/1.png" alt="Sales Distribution Map">
+    <div class="question">
+        <h3>What insights can you draw about sales concentration in different regions of the United States?</h3>
+        <ul>
+            <li>The top 3 sales states are: CA, NY, TX</li>
+            <li>The bottom 3 sales states are: ND, WV, SD</li>
+            <li>The midwest shows low sales numbers whereas both West and East coast boast strong sales.</li>
+        </ul>
     </div>
 
-    <div class="visualization-section">
-        <h2>Category Sales Comparison</h2>
-        <img src="images/category-sales.png" alt="Category Sales Chart">
-        <div class="analysis-section">
-            <h3>Key Findings:</h3>
-            <ul>
-                <li>Highest performing category: [Category name]</li>
-                <li>Lowest performing category: [Category name]</li>
-                <li>Notable trends: [Describe trends]</li>
-            </ul>
-        </div>
+    <img src="images/2.png" alt="Category Sales Chart">
+    <div class="question">
+        <h3>Which category has the highest sales, and which has the lowest? How does the performance of each category vary?</h3>
+        <ul>
+            <li>The technology category had the highest sales</li>
+            <li>The office supplies category had the lowest sales</li>
+            <li>The spread between office supplies and technology is vast, but the spread between each category to the next highest isn't so big.</li>
+        </ul>
     </div>
 
-    <div class="visualization-section">
-        <h2>Monthly Sales Trend</h2>
-        <img src="images/monthly-sales.png" alt="Monthly Sales Trend">
-        <div class="analysis-section">
-            <h3>Patterns Identified:</h3>
-            <ul>
-                <li>Peak sales months: [List months]</li>
-                <li>Seasonal trends: [Describe patterns]</li>
-                <li>Growth trajectory: [Describe overall trend]</li>
-            </ul>
-        </div>
+    <img src="images/3.png" alt="Monthly Sales Trend">
+    <div class="question">
+        <h3>Are there any noticeable patterns, such as peak sales months or consistent seasonal trends?</h3>
+        <ul>
+            <li>Peak sales months are November and December, clearly correlated to American consumerism during holiday season.</li>
+        </ul>
     </div>
 
-    <div class="visualization-section">
-        <h2>Profit vs. Sales Analysis</h2>
-        <img src="images/profit-sales-scatter.png" alt="Profit vs Sales Scatter Plot">
-        <div class="analysis-section">
-            <h3>Key Insights:</h3>
-            <ul>
-                <li>High profit, high sales products: [List products]</li>
-                <li>High sales, low profit concerns: [List products]</li>
-                <li>Recommendations: [Your recommendations]</li>
-            </ul>
-        </div>
+    <img src="images/4.png" alt="Profit vs Sales Scatter Plot">
+    <div class="question">
+        <h3>Are there any sub-categories with high sales but low profit, or vice versa?</h3>
+        <ul>
+            <li>Tables and bookcases are sub-categories with high sales but low/negative profit.</li>
+            <li>This may be due to materials cost associated with production (wood).</li>
+        </ul>
     </div>
 
-    <div class="visualization-section">
-        <h2>Sales by Shipping Mode</h2>
-        <img src="images/shipping-mode-sales.png" alt="Sales by Shipping Mode">
-        <div class="analysis-section">
-            <h3>Analysis:</h3>
-            <ul>
-                <li>Most used shipping mode: [Mode name]</li>
-                <li>Least used shipping mode: [Mode name]</li>
-                <li>Business implications: [Your analysis]</li>
-            </ul>
-        </div>
+    <img src="images/5.png" alt="Sales by Shipping Mode">
+    <div class="question">
+        <h3>Which shipping mode generates the highest sales, and which generates the least?</h3>
+        <ul>
+            <li>Standard class is the highest used shipping mode whereas same day is the least</li>
+            <li>This can help the company know which air routes it needs to keep available, as well as how many resources to allocate for each mode.</li>
+        </ul>
     </div>
 
-    <footer>
-        <p>Analysis created by [Your Name] - Last updated: [Date]</p>
-    </footer>
 </body>
 </html>
