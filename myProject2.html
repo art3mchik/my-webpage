@@ -110,7 +110,7 @@
             .range(d3.schemePaired);
 
         // Load and process data
-        d3.csv("master.csv").then(function(data) {
+        d3.csv("data/master.csv").then(function(data) {
             // Process data
             data.forEach(d => {
                 d.year = +d.year;
